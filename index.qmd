@@ -106,21 +106,27 @@ knitr::kable(sat_info, caption = "Metadatos del análisis satelital")
 
 # Visualización Leaflet
 leaflet() %>%
-  addProviderTiles("Esri.WorldImagery", group = "Satélite (Esri)")%>%
-  #addRasterImage(ndvi_wgs, colors = ndvi_pal, opacity = 1, group = "NDVI") %>%
+  addProviderTiles("Esri.WorldImagery", group = "Satélite (Esri)") %>%
+  
   addRasterImage(nbr_wgs, colors = nbr_pal, opacity = 1, group = "Salud vegetativa (NDVI)") %>%
-  #addRasterImage(ndwi_wgs, colors = ndwi_pal, opacity = 1, group = "NDWI") %>%
   addRasterImage(msi_wgs, colors = msi_pal, opacity = 1, group = "Húmedad del Suelo") %>%
   addRasterImage(dnbr_wgs, colors = dnbr_pal, opacity = 1, group = "Área afectadas por incendio") %>%
   addRasterImage(dnbr_class_wgs, colors = dnbr_class_pal, opacity = 1, group = "Severidad por incendio", project = FALSE) %>%
-  addPolygons(data = st_as_sf(nixticuil_wgs), color = "blue", weight = 2, fillOpacity = 0, group = "Polígono Nixticuil") %>%
+  
+  addPolygons(data = st_as_sf(nixticuil_wgs), color = "black", weight = 2, fillOpacity = 0, group = "Polígono Nixticuil") %>%
+  
   addLegend(position = "bottomleft", pal = dnbr_pal, values = values(dnbr_wgs, na.rm = TRUE), title = "Área afectadas por incendio", group = "Área afectadas por incendio") %>%
-  addLegend(position = "bottomleft", pal = nbr_pal, values = values(nbr_wgs , na.rm = TRUE), title = "Salud vegetativa (NDVI)", group = "Salud vegetativa (NDVI)") %>%
+  addLegend(position = "bottomright", pal = nbr_pal, values = values(nbr_wgs , na.rm = TRUE), title = "Salud vegetativa (NDVI)", group = "Salud vegetativa (NDVI)") %>%
+  addLegend(position = "bottomleft", pal = msi_pal, values = values(msi_wgs, na.rm = TRUE), title = "Húmedad del Suelo", group = "Húmedad del Suelo") %>%
   addLegend(position = "bottomright", pal = dnbr_class_pal, values = dnbr_values, title = "Severidad por incendio", group = "Severidad por incendio") %>%
   addLayersControl(
     overlayGroups = c("Polígono Nixticuil", "Salud vegetativa (NDVI)", "Húmedad del Suelo", "Área afectadas por incendio", "Severidad por incendio"),
     position = "topright",
     options = layersControlOptions(collapsed = FALSE, autoZIndex = TRUE)
-  )
+  ) %>%
+  
+  # Ocultar todas excepto las deseadas
+  hideGroup(c("Húmedad del Suelo", "Área afectadas por incendio", "Severidad por incendio"))
+
 
 ```

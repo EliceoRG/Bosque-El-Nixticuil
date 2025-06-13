@@ -1,6 +1,6 @@
 project:
   type: website
-  output-dir: "C:/Users/EliceoR/Desktop/Nixticuil/Leaflet/monitoreo_nixticuil"
+  output-dir: docs
 
 website:
   title: "Observatorio de Salud Vegetativa"
